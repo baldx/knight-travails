@@ -1,4 +1,4 @@
-class position {
+class Position {
     constructor(x, y) {
         this.x = x;
         this.y = y;
@@ -12,8 +12,13 @@ let gameBoard = [];
 
 for (let i = 0; i <= boardSize; i++) {
     for (let j = 0; j <= i; j++) {
-        gameBoard.push(new position(i, j))
+        gameBoard.push(new Position(i, j))
     }
 }
 
-console.log(gameBoard[30].x);
+function setVisited (position) {
+    if (position && typeof position === "object" && "visited" in position) position.visited = true
+    else return "Invalid position object";
+
+    return position;
+}
