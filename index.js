@@ -2,6 +2,8 @@ class position {
     constructor(x, y) {
         this.x = x;
         this.y = y;
+        this.visited = false;
+        this.parent = null;
     }
 }
 
@@ -13,4 +15,5 @@ for (let i = 0; i <= boardSize; i++) {
         gameBoard.push(new position(i, j))
     }
 }
-console.log(gameBoard);
+
+console.log(gameBoard[30].x);
