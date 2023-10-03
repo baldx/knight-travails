@@ -19,8 +19,6 @@ for (let i = 0; i <= boardSize; i++) {
 function setVisited (position) {
     if (position && typeof position === "object" && "visited" in position) position.visited = true;
     else return "Invalid position object" + position;
-
-    return position;
 }
 
 function checkValidity (x, y) {
@@ -32,8 +30,7 @@ function checkValidity (x, y) {
     } else return null;
 }
 
-function findMoves (x, y, boardSize) {
-
+function findMoves (x, y) {
     let validMoves = [];
 
     const moves = [
@@ -55,7 +52,6 @@ function findMoves (x, y, boardSize) {
             validMoves.push({x: newX, y: newY});
         }
     }
-
     return validMoves;
 }
 
@@ -64,9 +60,9 @@ function knightTravail (startX, startY, targetX, targetY) {
     if (startX === targetX && startY === targetY) return [{x: startX, y: startY}]
 
     let cellVisited = [];
-    initalCell = new Position(startX, startY);
-    initalCell.visited = true;
-    cellVisited.push(initalCell);
+    const initialCell = new Position(startX, startY);
+    initialCell.visited = true;
+    cellVisited.push(initialCell);
 
     while (cellVisited.length !== 0) {
         const currentCell = cellVisited.pop();
@@ -74,20 +70,50 @@ function knightTravail (startX, startY, targetX, targetY) {
         const possibleMoves = findMoves(currentCell.x, currentCell.y);
 
         for (const move of possibleMoves) {
+            const { x: newX, y: newY } = move;
+            
+            if (checkValidity(newX, newY) && !isVisited(newX, newY)) {
+                const newCell = new Position(newX, newY);
+                newCell.visited = true;
+                newCell.parent = currentCell;
+                cellVisited.push(newCell);
 
+                if (newX === targetX && newY === targetY) {
+                    let path = [];
+                    let traceCell = newCell;
+
+                    while (traceCell !== initialCell) {
+                        path.unshift({x: traceCell.x, y: traceCell.y});
+                        traceCell = traceCell.parent;
+                    }
+                    path.unshift({x: initialCell.x, y: initialCell.y});
+                    return path;
+                }
+            }
         }
+    }
+    return null;
+}
 
-        if (nextCell.x === targetX && nextCell.y === targetY) return "Found path"
-        else nextCell.parent = nextCell;
+function isVisited (x, y) {
+    return gameBoard[x * boardSize + y];
+}
 
-        knightTravail(nextCell.x, nextCell.y, targetX, targetY);
+function unVisit (x, y) {
+    return gameBoard[x * boardSize + y].visited = false;
+}
+
+function returnPath () {
+    path = knightTravail(1, 2, 2, 3);
+
+    if (path) {
+        console.log("Found path");
+        for (const cell of path) {
+            console.log(`${cell.x}, ${cell.y}`);
+        } 
+    } else {
+        console.log("No path found");
     }
 }
 
-function isVisited (board, x, y) {
-    return board[x][y].visited;
-}
-
-function unVisit (board, x, y) {
-    return board[x][y].visited = false;
-}
+returnPath();
