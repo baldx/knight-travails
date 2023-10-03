@@ -55,18 +55,27 @@ function findMoves (x, y, boardSize) {
             validMoves.push({x: newX, y: newY});
         }
     }
+
+    return validMoves;
 }
 
 function knightTravail (startX, startY, targetX, targetY) {
 
-    if (startX === targetX && startY === targetY) return "Found path";
+    if (startX === targetX && startY === targetY) return [{x: startX, y: startY}]
 
     let cellVisited = [];
-    cellVisited.push(new Position(startX, startY))
-    cellVisited[0].visited = true;
+    initalCell = new Position(startX, startY);
+    initalCell.visited = true;
+    cellVisited.push(initalCell);
 
     while (cellVisited.length !== 0) {
-        let nextCell = cellVisited.pop();
+        const currentCell = cellVisited.pop();
+
+        const possibleMoves = findMoves(currentCell.x, currentCell.y);
+
+        for (const move of possibleMoves) {
+
+        }
 
         if (nextCell.x === targetX && nextCell.y === targetY) return "Found path"
         else nextCell.parent = nextCell;
@@ -75,4 +84,10 @@ function knightTravail (startX, startY, targetX, targetY) {
     }
 }
 
-console.log(knightTravail(0, 1));
+function isVisited (board, x, y) {
+    return board[x][y].visited;
+}
+
+function unVisit (board, x, y) {
+    return board[x][y].visited = false;
+}
