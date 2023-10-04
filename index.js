@@ -10,8 +10,8 @@ class Position {
 let boardSize = 8;
 let gameBoard = [];
 
-for (let i = 0; i <= boardSize; i++) {
-    for (let j = 0; j <= i; j++) {
+for (let i = 0; i < boardSize; i++) {
+    for (let j = 0; j < i; j++) {
         gameBoard.push(new Position(i, j))
     }
 }
@@ -66,13 +66,15 @@ function knightTravail (startX, startY, targetX, targetY) {
 
     while (cellVisited.length !== 0) {
         const currentCell = cellVisited.pop();
-
+        
         const possibleMoves = findMoves(currentCell.x, currentCell.y);
 
         for (const move of possibleMoves) {
             const { x: newX, y: newY } = move;
             
-            if (checkValidity(newX, newY) && !isVisited(newX, newY)) {
+            
+
+            if (checkValidity(newX, newY) && checkValidity(newX, newY).visited !== true) {
                 const newCell = new Position(newX, newY);
                 newCell.visited = true;
                 newCell.parent = currentCell;
@@ -95,6 +97,8 @@ function knightTravail (startX, startY, targetX, targetY) {
     return null;
 }
 
+
+
 function isVisited (x, y) {
     return gameBoard[x * boardSize + y];
 }
@@ -115,5 +119,3 @@ function returnPath () {
         console.log("No path found");
     }
 }
-
-returnPath();
