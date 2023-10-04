@@ -71,8 +71,6 @@ function knightTravail (startX, startY, targetX, targetY) {
 
         for (const move of possibleMoves) {
             const { x: newX, y: newY } = move;
-            
-            
 
             if (checkValidity(newX, newY) && checkValidity(newX, newY).visited !== true) {
                 const newCell = new Position(newX, newY);
@@ -97,25 +95,13 @@ function knightTravail (startX, startY, targetX, targetY) {
     return null;
 }
 
-
-
-function isVisited (x, y) {
-    return gameBoard[x * boardSize + y];
-}
-
-function unVisit (x, y) {
-    return gameBoard[x * boardSize + y].visited = false;
-}
-
 function returnPath () {
-    path = knightTravail(1, 2, 2, 3);
+    path = knightTravail(1, 1, 2, 3);
 
-    if (path) {
-        console.log("Found path");
-        for (const cell of path) {
-            console.log(`${cell.x}, ${cell.y}`);
-        } 
-    } else {
-        console.log("No path found");
+    console.log("Found path");
+    for (const cell of path) {
+        console.log(`${cell.x}, ${cell.y}`);
     }
 }
+
+returnPath()
